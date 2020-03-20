@@ -4,7 +4,7 @@
 import os
 from subprocess import getstatusoutput, getoutput
 
-prg = '.\\crowsnest_ex2.py'
+prg = '.\\crowsnest_ex3.py'
 consonant_words = [
     'brigatine', 'clipper', 'dreadnought', 'frigate', 'galleon', 'haddock',
     'junk', 'ketch', 'longboat', 'mullet', 'narwhal', 'porpoise', 'quay',
@@ -100,12 +100,12 @@ def test_punctuation():
     """quits if word starts with punctuation"""
 
     out = getoutput(f"{prg} !punct")
-    assert out.strip == "word cannot start with punctuation. Type -h for help. Exiting application..."
+    assert out.strip() == "word cannot start with punctuation. Type -h for help. Exiting application..."
 
 
 # ---------------------------------------------------
 def test_number():
     """removes article if word start with number"""
 
-    out = getoutput(f"{prg} 8 walrus")
-    assert out.strip == template.format(8, walrus)
+    out = getoutput(f"{prg} 8walrus")
+    assert out.strip() == template.format("", "8walrus")

@@ -8,6 +8,7 @@ Purpose: Rock the Casbah
 import argparse
 import os
 import sys
+import string
 
 
 # --------------------------------------------------
@@ -41,19 +42,30 @@ def main():
     """Prints out the message for the Captain"""
 
     args = get_args()
+
     word = args.word
     if word[0] in string.punctuation:
         print("word cannot start with punctuation. Type -h for help. Exiting application...")
+        sys.exit()
 
     side = args.side
     if side.lower() not in ["right", "left", "starboard", "larboard"]:
         print("'side' argument invalid. Type -h for help. Exiting application...")
         sys.exit()
 
-    article = "an" if word[0].lower() in "aeiou" else "a"
+    if word[0].isdigit():
+        article = ""
+    elif word[0].lower() in "aeiou":
+        article = "an"
+    else:
+        article = "a"
+
     article = article.upper() if word.isupper() else article
     article = article[0].upper() + article[1:] if word[0].isupper() else article
+
     side_str = "starboard" if side == "right" or side == "starboard" or args.starboard else "larboard"
+
+
     print("Ahoy, Captain, {} {} off the {} bow!".format(article, word, side_str))
 
 
