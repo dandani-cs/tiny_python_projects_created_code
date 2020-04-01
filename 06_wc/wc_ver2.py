@@ -35,26 +35,20 @@ def main():
 
     args = get_args()
 
-    total_lines = 0
-    total_characters = 0
-    total_words = 0
+    total = {'lines': 0, 'words': 0, 'characters': 0}
 
     for file in args.FILE:
-        current_lines = 0
-        current_words = 0
-        current_characters = 0
+        current = {'lines': 0, 'words': 0, 'characters': 0}
         for line in file:
-            current_lines += 1;
-            current_characters += len(line)
-            current_words += len(line.split(" "))
-        print(f"{current_lines:8}{current_words:8}{current_characters:8} {file.name}")
-        total_lines += current_lines
-        total_characters += current_characters
-        total_words += current_words
+            current["lines"] += 1
+            current["characters"] += len(line)
+            current["words"] += len(line.split(" "))
+        print(f'{current["lines"]:8}{current["words"]:8}{current["characters"]:8} {file.name}')
+        total["lines"] += current["lines"]
+        total["characters"] += current["characters"]
+        total["words"] += current["words"]
 
-    print(f"{total_lines:8}{total_words:8}{total_characters:8} total") if len(args.FILE) > 1 else ""
-
-
+    print(f'{total["lines"]:8}{total["words"]:8}{total["characters"]:8} total') if len(args.FILE) > 1 else ""
 
 
 # --------------------------------------------------

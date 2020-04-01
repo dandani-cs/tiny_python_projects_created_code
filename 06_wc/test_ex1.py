@@ -7,7 +7,7 @@ import re
 import string
 from subprocess import getstatusoutput
 
-prg = '.\\wc_ver2.py'
+prg = '.\\wc_ex1.py'
 fox = '..\\inputs\\fox.txt'
 sonnet = '..\\inputs\\sonnet-29.txt'
 
@@ -102,3 +102,12 @@ def test_stdin():
     rv, out = getstatusoutput(f'{prg} < {fox}')
     assert rv == 0
     assert out.rstrip() == '       1       9      45 <stdin>'
+
+
+# --------------------------------------------------
+def test_options():
+    """Test specific column options"""
+
+    rv, out = getstatusoutput(f"{prg} {fox} -wc")
+    assert rv == 0
+    assert out.rstrip() == "       9      45 ..\\inputs\\fox.txt"
