@@ -30,6 +30,11 @@ def get_args():
                         type=str,
                         default='a')
 
+    parser.add_argument("-d",
+                        "--double",
+                        help="removes double vowels",
+                        action="store_true")
+
 
     return parser.parse_args()
 
@@ -43,6 +48,10 @@ def main():
     for char in text:
         args.vowel = args.vowel.upper() if char.isupper() else args.vowel.lower()
         text = text.replace(char, args.vowel) if char in "aeiouAEIOU" else text
+
+
+    if args.double:
+        text = text.replace(args.vowel.lower() * 2, args.vowel.lower()).replace(args.vowel.upper(), args.vowel.upper())
 
     print(text)
 
