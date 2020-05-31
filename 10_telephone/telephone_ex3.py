@@ -37,12 +37,17 @@ def get_args():
                         type=int,
                         default=0)
 
+    parser.add_argument('-o',
+                        "--outfile",
+                        help = "Optional outfile",
+                        default=None)
+
 
 
     args = parser.parse_args()
 
     parser.error(f'--mutations "{args.mutations}" must be between 0 and 1') if args.mutations < 0 or args.mutations > 1 else  ""
-
+    sys.stdout = open(args.outfile, 'w') if os.path.isfile(args.outfile) else sys.stdout
 
     args.text = open(args.text).read().strip() if os.path.isfile(args.text) else args.text
 

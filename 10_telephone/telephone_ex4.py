@@ -35,7 +35,12 @@ def get_args():
                         help='Controls the randomness of the mutations',
                         metavar='int',
                         type=int,
-                        default=0)
+                        default=None)
+
+    parser.add_argument("-c",
+                        "--characters",
+                        help = "Flags that only characters should mutate",
+                        action = "store_true")
 
 
 
@@ -61,7 +66,15 @@ def main():
     num_mutations = round(len(args.text) * args.mutations)
     indexes = random.sample(range(len(text)), num_mutations)
 
+    available_indexes = list(range(len(text)))
     for index in indexes:
+        available_indexes.remove(index)
+
+    for index in indexes:
+        if args.characters:
+            while text[index] in string.punctuation:
+                indexes[index] = random.choice(available_indexes)
+
         text[index] = random.choice(choices.replace(text[index], ''))
 
     print(f'You said: "{args.text}"')

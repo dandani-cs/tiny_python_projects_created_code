@@ -35,13 +35,27 @@ def get_args():
                         help='Controls the randomness of the mutations',
                         metavar='int',
                         type=int,
-                        default=0)
+                        default=None)
+
+    parser.add_argument('-i',
+                        '--insertions',
+                        help = "Optional percentage of insertion",
+                        type = float,
+                        default = 0.1)
+
+    parser.add_argument("-d",
+                        "--deletions",
+                        help = "Optional percentage of deletion",
+                        type = float,
+                        default = 0.1)
 
 
 
     args = parser.parse_args()
 
     parser.error(f'--mutations "{args.mutations}" must be between 0 and 1') if args.mutations < 0 or args.mutations > 1 else  ""
+    parser.error(f'--insertions "{args.insertions}" must be between 0 and 1') if args.insertions < 0 or args.insertions > 1 else  ""
+    parser.error(f'--deletions "{args.deletions}" must be between 0 and 1') if args.deletions < 0 or args.deletions > 1 else  ""
 
 
     args.text = open(args.text).read().strip() if os.path.isfile(args.text) else args.text
@@ -63,6 +77,21 @@ def main():
 
     for index in indexes:
         text[index] = random.choice(choices.replace(text[index], ''))
+
+    num_insertions = round(len(args.text) * args.insertions)
+    ins_indexes = random.sample(range(len(text)), num_insertions)
+
+    for index in ins_indexes:
+        choice = random.choice(choices)
+        choices.replace(choice, '')
+        text.insert(index, choice)
+
+    num_deletions = round(len(args.text) * args.deletions)
+    del_indexes = random.sample(range(len(text)), num_deletions)
+
+    for index in del_indexes:
+        del text[index]
+
 
     print(f'You said: "{args.text}"')
     print(f'I heard : "{"".join(text)}"')

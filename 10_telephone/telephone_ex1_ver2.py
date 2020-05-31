@@ -37,11 +37,10 @@ def get_args():
                         type=int,
                         default=0)
 
-
-
     args = parser.parse_args()
 
     parser.error(f'--mutations "{args.mutations}" must be between 0 and 1') if args.mutations < 0 or args.mutations > 1 else  ""
+    parser.error(f'--seed "{args.seed}" must ') if args.seed < 0 else  ""
 
 
     args.text = open(args.text).read().strip() if os.path.isfile(args.text) else args.text
@@ -56,16 +55,26 @@ def main():
     args = get_args()
     random.seed(args.seed)
 
-    text = list(args.text)
-    choices = string.ascii_letters + string.punctuation
-    num_mutations = round(len(args.text) * args.mutations)
-    indexes = random.sample(range(len(text)), num_mutations)
+    text = args.text.split(" ")
 
-    for index in indexes:
-        text[index] = random.choice(choices.replace(text[index], ''))
+    choices = string.ascii_letters + string.punctuation
+    word_num_mutations = round(len(text) * args.mutations)
+    words = random.sample(text, word_num_mutations)
+
+    for word in words:
+        new_word = list(word)
+        num_mutations = round(len(word) * args.mutations)
+        indexes = random.sample(range(len(word)), num_mutations)
+
+        for index in indexes:
+            new_word[index] = random.choice(choices.replace(new_word[index], ''))
+
+        word_index = text.index(word)
+        text[word_index] = "".join(new_word)
+        
 
     print(f'You said: "{args.text}"')
-    print(f'I heard : "{"".join(text)}"')
+    print(f'I heard : "{" ".join(text)}"')
 
 
 # --------------------------------------------------
